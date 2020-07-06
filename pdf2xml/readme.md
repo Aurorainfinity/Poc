@@ -199,9 +199,30 @@
 	SUMMARY: AddressSanitizer: SEGV /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:2765 TextPage::restoreState(GfxState*)
 	==14321==ABORTING
 
-	$ gdb ./pdf2xml  
+	$ gdb ./pdf2xml ../../pdf2xml_out_tmin/crashes.2020-07-03-18\:59\:32/id:000024,sig:11,src:000004,op:flip1,pos:568370 test.xml
 	
-	(gdb) r .03-Unknow-pointer-dereference-TextPage-restoreState.pdftest.xml
+	Excess command line arguments ignored. (test.xml)
+	GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+	Copyright (C) 2016 Free Software Foundation, Inc.
+	License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+	This is free software: you are free to change and redistribute it.
+	There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+	and "show warranty" for details.
+	This GDB was configured as "x86_64-linux-gnu".
+	Type "show configuration" for configuration details.
+	For bug reporting instructions, please see:
+	<http://www.gnu.org/software/gdb/bugs/>.
+	Find the GDB manual and other documentation resources online at:
+	<http://www.gnu.org/software/gdb/documentation/>.
+	For help, type "help".
+	Type "apropos word" to search for commands related to "word"...
+	Reading symbols from ./pdf2xml...done.
+	"/home/test/pdf2xml_analysis/pdf2xml/../../pdf2xml_out_tmin/crashes.2020-07-03-18:59:32/id:000024,sig:11,src:000004,op:flip1,pos:568370" is not a core dump: File format not recognized
+	(gdb) r ../../pdf2xml_out_tmin/crashes.2020-07-03-18\:59\:32/id:000024,sig:11,src:000004,op:flip1,pos:568370 test.xml
+	Starting program: /home/test/pdf2xml_analysis/pdf2xml/pdf2xml ../../pdf2xml_out_tmin/crashes.2020-07-03-18\:59\:32/id:000024,sig:11,src:000004,op:flip1,pos:568370 test.xml
+	[Thread debugging using libthread_db enabled]
+	Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+	Syntax Error (568381): Too few (0) args to 'y' operator
 
 	Program received signal SIGSEGV, Segmentation fault.
 	0x000000000041f38e in TextPage::restoreState (this=0x61500000b980, state=0x61700000f900) at /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:2765
@@ -220,3 +241,56 @@
 
 	Function : TextPage::restoreState
 	Type: unkown-pointer
+
+## 04-Memory leaks-TextPage-testLinkedText.pdf
+
+	$ ./pdf2xml 04-Memory leaks-TextPage-testLinkedText.pdf test.xml
+	=================================================================
+	==82085==ERROR: LeakSanitizer: detected memory leaks
+
+	Direct leak of 99000 byte(s) in 99 object(s) allocated from:
+		#0 0x7f1554619602 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.2+0x98602)
+		#1 0x7f1553d2f735  (/usr/lib/x86_64-linux-gnu/libxml2.so.2+0x2e735)
+
+	Direct leak of 4850 byte(s) in 97 object(s) allocated from:
+		#0 0x7f1554619602 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.2+0x98602)
+		#1 0x4156a9 in TextPage::testLinkedText(_xmlNode*, double, double, double, double) /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:1473
+		#2 0x41773d in TextPage::dump(int, int) /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:1764
+		#3 0x428ec5 in XmlOutputDev::endPage() /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:4155
+		#4 0x48e309 in Gfx::~Gfx() /home/test/pdf2xml_analysis/pdf2xml/xpdf/xpdf/Gfx.cc:591
+		#5 0x45653e in Page::display(OutputDev*, double, double, int, int, int, int, int (*)(void*), void*) /home/test/pdf2xml_analysis/pdf2xml/xpdf/xpdf/Page.cc:310
+
+	Direct leak of 3924 byte(s) in 97 object(s) allocated from:
+		#0 0x7f1554619602 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.2+0x98602)
+		#1 0x417a6c in TextPage::dump(int, int) /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:1800
+		#2 0x428ec5 in XmlOutputDev::endPage() /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:4155
+		#3 0x48e309 in Gfx::~Gfx() /home/test/pdf2xml_analysis/pdf2xml/xpdf/xpdf/Gfx.cc:591
+		#4 0x45653e in Page::display(OutputDev*, double, double, int, int, int, int, int (*)(void*), void*) /home/test/pdf2xml_analysis/pdf2xml/xpdf/xpdf/Page.cc:310
+
+	Direct leak of 3316 byte(s) in 227 object(s) allocated from:
+		#0 0x7f15545e330f in strdup (/usr/lib/x86_64-linux-gnu/libasan.so.2+0x6230f)
+		#1 0x40a476 in TextWord::TextWord(GfxState*, int, int, int, int, double, double, int, TextFontInfo*, double, int, int) /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:212
+		#2 0x4125fc in TextPage::beginWord(GfxState*, double, double) /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:1160
+		#3 0x4128c9 in TextPage::addChar(GfxState*, double, double, double, double, unsigned int, int, unsigned int*, int) /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:1178
+		#4 0x429048 in XmlOutputDev::drawChar(GfxState*, double, double, double, double, double, double, unsigned int, int, unsigned int*, int) /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:4172
+		#5 0x4935b1 in Gfx::doShowText(GString*) /home/test/pdf2xml_analysis/pdf2xml/xpdf/xpdf/Gfx.cc:3646
+
+## 05-Stack-buffer-overflow-XRef-getObjectStream.pdf
+
+	$ gdb ./pdf2xml 
+
+	(gdb) r 05-Stack-buffer-overflow-XRef-getObjectStream.pdf test.xml
+	[Thread debugging using libthread_db enabled]
+	Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+	Syntax Error (593163): Dictionary key must be a name object
+	Syntax Error (593170): Dictionary key must be a name object
+
+	Program received signal SIGSEGV, Segmentation fault.
+	0x00007ffff6e8c80b in ?? () from /usr/lib/x86_64-linux-gnu/libasan.so.2
+	(gdb) x/5i $rip
+	=> 0x7ffff6e8c80b:	mov    %ecx,0x8(%rsp)
+	0x7ffff6e8c80f:	mov    %r8d,0x10(%rsp)
+	0x7ffff6e8c814:	mov    (%rax),%eax
+	0x7ffff6e8c816:	test   %eax,%eax
+	0x7ffff6e8c818:	je     0x7ffff6e8d0a0
+
