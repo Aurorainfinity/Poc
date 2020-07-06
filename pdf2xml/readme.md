@@ -199,30 +199,9 @@
 	SUMMARY: AddressSanitizer: SEGV /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:2765 TextPage::restoreState(GfxState*)
 	==14321==ABORTING
 
-	$ gdb ./pdf2xml ../../pdf2xml_out_tmin/crashes.2020-07-03-18\:59\:32/id:000024,sig:11,src:000004,op:flip1,pos:568370 test.xml
+	$ gdb ./pdf2xml  
 	
-	Excess command line arguments ignored. (test.xml)
-	GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
-	Copyright (C) 2016 Free Software Foundation, Inc.
-	License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-	This is free software: you are free to change and redistribute it.
-	There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
-	and "show warranty" for details.
-	This GDB was configured as "x86_64-linux-gnu".
-	Type "show configuration" for configuration details.
-	For bug reporting instructions, please see:
-	<http://www.gnu.org/software/gdb/bugs/>.
-	Find the GDB manual and other documentation resources online at:
-	<http://www.gnu.org/software/gdb/documentation/>.
-	For help, type "help".
-	Type "apropos word" to search for commands related to "word"...
-	Reading symbols from ./pdf2xml...done.
-	"/home/test/pdf2xml_analysis/pdf2xml/../../pdf2xml_out_tmin/crashes.2020-07-03-18:59:32/id:000024,sig:11,src:000004,op:flip1,pos:568370" is not a core dump: File format not recognized
-	(gdb) r ../../pdf2xml_out_tmin/crashes.2020-07-03-18\:59\:32/id:000024,sig:11,src:000004,op:flip1,pos:568370 test.xml
-	Starting program: /home/test/pdf2xml_analysis/pdf2xml/pdf2xml ../../pdf2xml_out_tmin/crashes.2020-07-03-18\:59\:32/id:000024,sig:11,src:000004,op:flip1,pos:568370 test.xml
-	[Thread debugging using libthread_db enabled]
-	Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
-	Syntax Error (568381): Too few (0) args to 'y' operator
+	(gdb) r .03-Unknow-pointer-dereference-TextPage-restoreState.pdftest.xml
 
 	Program received signal SIGSEGV, Segmentation fault.
 	0x000000000041f38e in TextPage::restoreState (this=0x61500000b980, state=0x61700000f900) at /home/test/pdf2xml_analysis/pdf2xml/src/XmlOutputDev.cc:2765
