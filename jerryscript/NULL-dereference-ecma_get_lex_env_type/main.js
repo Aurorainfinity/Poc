@@ -1,0 +1,12 @@
+print('esm');
+import * as Foo from './foo.js';
+print(Foo.x);
+print(Foo.y());
+print(Foo.z);
+print(Foo.shortVar);
+print(Foo.a);
+print(Foo.b);
+import { y, z as zAliased } from './foo.js';
+print(y(), zAliased);
+print(FooDefault());
+import FooDefault from './foo.js';
